@@ -16,8 +16,8 @@ library(flexdashboard)
 # devtools::install_github("RamiKrispin/coronavirus", force = TRUE)
 library(coronavirus)
 data(coronavirus)
-# update_datasets()
-# View(coronavirus)
+update_datasets()
+#View(coronavirus)
 # max(coronavirus$date)
 library(dplyr)
 #Change from Burma to Myanmar
@@ -262,7 +262,7 @@ daily_confirmed %>%
 ### **Cases distribution by type**
 
 ```{r daily_summary}
-df_EU <- coronavirus %>%
+df_SEA <- coronavirus %>%
   # dplyr::filter(date == max(date)) %>%
   dplyr::filter(Country.Region == "Myanmar" |
     Country.Region == "Singapore" |
@@ -285,7 +285,7 @@ df_EU <- coronavirus %>%
   dplyr::mutate(country = factor(country, levels = country))
 
 plotly::plot_ly(
-  data = df_EU,
+  data = df_SEA,
   x = ~country,
   # y = ~unrecovered,
   y = ~ confirmed,
