@@ -17,12 +17,11 @@ library(flexdashboard)
 library(coronavirus)
 data(coronavirus)
 update_datasets()
-#View(coronavirus)
+# View(coronavirus)
 # max(coronavirus$date)
 library(dplyr)
 #Change from Burma to Myanmar
 coronavirus$Country.Region[coronavirus$Country.Region == "Burma"] <- "Myanmar"
-
 
 `%>%` <- magrittr::`%>%`
 #------------------ Parameters ------------------
@@ -51,7 +50,6 @@ df <- coronavirus %>%
   dplyr::mutate(country = dplyr::if_else(country == "North Macedonia", "N.Macedonia", country)) %>%
   dplyr::mutate(country = trimws(country)) %>%
   dplyr::mutate(country = factor(country, levels = country))
-
 df_daily <- coronavirus %>%
   dplyr::filter(Country.Region == "Myanmar") %>%
   dplyr::group_by(date, type) %>%
@@ -167,7 +165,7 @@ plotly::plot_ly(data = df_daily) %>%
   ) %>%
   plotly::add_annotations(
     x = as.Date("2020-03-31"),
-    y = 1,
+    y = 3,
     text = paste("First death"),
     xref = "x",
     yref = "y",
@@ -219,19 +217,19 @@ daily_confirmed %>%
     mode = "lines+markers",
     name = "Myanmar"
   ) %>%
+  #plotly::add_trace(
+   # x = ~date,
+    #y = ~Singapore,
+    #type = "scatter",
+    #mode = "lines+markers",
+    #name = "Singapore"
+  #) %>%
   plotly::add_trace(
     x = ~date,
-    y = ~Singapore,
+    y = ~Laos,
     type = "scatter",
     mode = "lines+markers",
-    name = "Singapore"
-  ) %>%
-  plotly::add_trace(
-    x = ~date,
-    y = ~Thailand,
-    type = "scatter",
-    mode = "lines+markers",
-    name = "Thailand"
+    name = "Laos"
   ) %>%
   plotly::add_trace(
     x = ~date,
@@ -262,11 +260,11 @@ daily_confirmed %>%
 ### **Cases distribution by type**
 
 ```{r daily_summary}
-df_SEA <- coronavirus %>%
+df_EU <- coronavirus %>%
   # dplyr::filter(date == max(date)) %>%
   dplyr::filter(Country.Region == "Myanmar" |
-    Country.Region == "Singapore" |
-    Country.Region == "Thailand" |
+    #Country.Region == "Singapore" |
+    Country.Region == "Laos" |
     Country.Region == "Cambodia") %>%
   dplyr::group_by(Country.Region, type) %>%
   dplyr::summarise(total = sum(cases)) %>%
@@ -285,7 +283,7 @@ df_SEA <- coronavirus %>%
   dplyr::mutate(country = factor(country, levels = country))
 
 plotly::plot_ly(
-  data = df_SEA,
+  data = df_EU,
   x = ~country,
   # y = ~unrecovered,
   y = ~ confirmed,
